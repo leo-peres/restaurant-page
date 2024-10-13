@@ -1,0 +1,32 @@
+:root {
+
+    --header-font-color: #fafafa;
+    --header-bg-color: #080808;
+
+}
+
+body {
+    margin: 0;
+}
+
+header {
+    color: var(--header-font-color);
+    background-color: var(--header-bg-color);
+    padding: 32px 15%;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+header nav {
+    text-align: center;
+}
+
+#content h1 {
+    text-align: center;
+}
+
+#content img {
+    margin: auto;
+    display: block;
+}
