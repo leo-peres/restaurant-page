@@ -6,11 +6,12 @@ export default () => {
 
     const content = document.getElementById("content");
 
-    const header = document.createElement("h1");
-    header.innerText = restaurantName;
+    document.querySelector(".name-container h1").innerText = restaurantName;
+    document.querySelector(".name-container div").innerText = "Mexican food";
 
-    const background = document.createElement("div");
-    background.classList.add("background");
+    const container = document.createElement("div");
+    container.classList.add("container");
+    container.classList.add("home-container");
 
     let img = document.createElement("img");
     img.src = mainImg;
@@ -25,15 +26,16 @@ export default () => {
 
     let btn = document.createElement("button");
     btn.innerText = "Menu"
+    btn.id = "menu-btn";
 
     txtDiv.append(txt);
     txtDiv.append(btn);
 
-    background.append(img);
-    background.append(txtDiv);
+    container.append(img);
+    container.append(txtDiv);
 
     let map = document.createElement("iframe");
-    background.append(map);
+    container.append(map);
     map.outerHTML = '<iframe class="location" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2841.1895477024723!2d-116.39742143222922!3d36.64286353148558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbr!4v1728908776329!5m2!1sen!2sbr" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
 
     txtDiv = document.createElement("div");
@@ -43,17 +45,16 @@ export default () => {
     txt.innerText = "See how easy it is to find us."
 
     txtDiv.append(txt);
-    background.append(txtDiv);
+    container.append(txtDiv);
 
     txtDiv = document.createElement("div");
     txtDiv.classList.add("txt-div");
-    //txtDiv.classList.add("btn-div");
 
     txt = document.createElement("p");
     txt.innerText = "Don't waste any time and get your food delivered at your location right now!"
 
     txtDiv.append(txt);
-    background.append(txtDiv);
+    container.append(txtDiv);
 
     let btnDiv = document.createElement("div");
     btnDiv.classList.add("btn-div");
@@ -63,10 +64,8 @@ export default () => {
     btn.id = "order-now";
 
     btnDiv.append(btn);
-    background.append(btnDiv);
+    container.append(btnDiv);
 
-    content.append(header);
-    //content.append(desc);
-    content.append(background);
+    content.append(container);
 
 };
