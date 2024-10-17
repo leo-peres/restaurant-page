@@ -7,7 +7,11 @@
 
     --main-font-color: var(--header-bg-color);
 
+    --container-bg-color: #a5f3fc;
+
     --btn-bg-color: #fcf2a4;
+
+    --input-bg-color: hsl(186.21, 93.55%, 94%);
 
 }
 
@@ -57,7 +61,7 @@ header nav {
 
 .container {
     color: var(--main-font-color);
-    background-color: #a5f3fc;
+    background-color: var(--container-bg-color);
     text-align: center;
     padding: 64px 32px;
     margin: 24px 15vw 24px 15vw;
@@ -232,3 +236,97 @@ header nav {
 }
 
 /* ----------------- Contact ----------------- */
+
+
+.contact-container > .form-div {
+    background-color: #fcf2a4;
+    border: 4px solid var(--main-font-color);
+    border-radius: 2vw;
+    width: 42vw;
+
+    display: flex;
+    flex-direction: column;
+}
+
+#contact-form {
+    flex-direction: column;
+    gap: 1.8vh;
+}
+
+#contact-form .input-field-div {
+    font-weight: bold;
+}
+
+#contact-form .form-header {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 2vh;
+}
+
+#contact-form button {
+    color: var(--btn-bg-color);
+    background-color: var(--header-bg-color);
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 4% 10%;
+    border: 0;
+    border-radius: 32px;
+    margin-top: 2vh;
+    cursor: pointer;
+    
+    align-self: center;
+}
+
+#contact-form[show-invalid] .input:invalid {
+    outline: 1px solid #ef4444;
+}
+
+/* ----------------- Form ----------------- */
+
+.form-div {
+    padding: 5% 10%;
+}
+
+.form-div form {
+    display: flex;
+}
+
+.input-field-div {
+    --lh: 1.2em;
+    line-height: var(--lh);
+
+    display: grid;
+    grid-template-rows: 1rem 1fr;
+    gap: 0.8vh;
+}
+
+.input-field-div > label {
+    text-align: start;
+    padding-left: 0.2vw;
+
+    grid-row: 1;
+}
+
+.input {
+    color: var(--main-font-color);
+    background-color: var(--input-bg-color);
+    font-weight: bold;
+    padding-left: 1.8ch;
+    border: 0;
+    border-radius: 1.5ch;
+}
+
+.input:focus {
+    outline: 2px solid var(--header-bg-color);
+}
+
+.input-field-div > input {
+    height: calc(var(--lh)*1.5);
+}
+
+.input-field-div > textarea {
+    line-height: var(--lh);
+    padding-top: calc(var(--lh)*0.5);
+    height: calc(var(--lh)*17);
+    resize: none;
+}
