@@ -66,13 +66,12 @@ export default () => {
     for(let i = 0; i < 3; i++)
         addressDiv.append(document.createElement("div"));
 
-    addressDiv.childNodes[0].innerHTML = "<div>Address</div> <div> 123 12th Street </div> <div>Oakland Park, FL, 33306</div>"
+    addressDiv.childNodes[0].innerHTML = "<div>Address</div> <div> 123 45th Street </div> <div>Oakland Park, FL, 33306</div>"
     addressDiv.childNodes[1].innerHTML = "<div>Phone</div> <div>(2) 8258-9933</div>";
     addressDiv.childNodes[2].innerHTML = "<div>Email</div> <div>perro@caca.com</div>";
 
     const hoursDiv = document.createElement("div");
     hoursDiv.classList.add("contact-div");
-
     hoursDiv.append(document.createElement("div"));
     hoursDiv.childNodes[0].innerHTML = "<div>Open all days of the week</div><div>10:00AM - 10:00PM</div>";
 

@@ -80,6 +80,10 @@ header nav {
     margin: 24px auto;
 }
 
+button:focus {
+    outline: none;
+}
+
 /* ----------------- Home ----------------- */
 
 .home-container {
@@ -142,6 +146,17 @@ header nav {
     height: 240px;
     border: 8px solid #7d5169;
     border-radius: 50%;
+}
+
+#order-now-form-div {
+    position: absolute;
+    visibility: hidden;
+}
+
+#order-now-form-div[show] {
+    position: static;
+    grid-column: span 2;
+    visibility: visible;
 }
 
 /* ----------------- Menu ----------------- */
@@ -217,10 +232,6 @@ header nav {
     text-align: start;
     border: 0;
     cursor: pointer;
-}
-
-.subitem-name button:focus {
-    outline: none;
 }
 
 .subitem-price {
@@ -370,4 +381,105 @@ header nav {
     padding-top: calc(var(--lh)*0.5);
     height: calc(var(--lh)*17);
     resize: none;
+}
+
+/* ----------------- Order ----------------- */
+
+.product-div {
+    background-color: var(--input-bg-color);
+    border: 3px solid var(--header-bg-color);
+    width: 16vw;
+    overflow-y: scroll;
+
+    position: relative;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.order-product-div {
+    font-weight: bold;
+
+    flex: 1 1 auto;
+
+    display: grid;
+    grid-template-rows: max-content;
+    grid-auto-rows: 0px;
+}
+
+.order-product-div[expand] {
+    grid-auto-rows: 1fr;
+}
+
+.order-product-div:nth-last-child(n + 2) {
+    border-bottom: 5px solid var(--header-bg-color);
+}
+
+.order-product-name {
+    color: inherit;
+    background-color: inherit;
+    font: inherit;
+    font-size: 1.3rem;
+    text-align: start;
+    padding: 4px 0px 4px 6px;
+    border: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.order-product-div[expand] .order-product-name {
+    border-bottom: 3px solid var(--header-bg-color);
+}
+
+.order-subproduct-div {
+    visibility: hidden;
+
+    display: grid;
+    grid-template-columns: 1fr 64px;
+}
+
+.order-product-div[expand] .order-subproduct-div {
+    visibility: visible;
+}
+
+.order-subproduct-div:nth-last-child(n + 2) {
+    border-bottom: 1px solid var(--header-bg-color);
+}
+
+.order-subproduct {
+    text-align: start;
+    padding: 4px 0px 4px 10px;
+    border: 0;
+    margin: auto 0px;
+}
+
+.order-quant-div {
+    padding: 6px;
+    visibility: inherit;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+}
+
+.order-quant-div[show] {
+    visibility: visible;
+}
+
+.order-quant {
+    text-align: end;
+    margin: auto 0px;
+
+    grid-row: span 2;
+}
+
+.order-quant-btn {
+    color: inherit;
+    background-color: var(--btn-bg-color);
+    font: inherit;
+    border: 2px solid var(--header-bg-color);
+    border-radius: 50%;
+    margin: 4px 0px 4px 8px;
+    cursor: pointer;
 }
