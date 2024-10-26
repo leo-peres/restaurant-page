@@ -1,101 +1,9 @@
 import mainImg from "../assets/images/caca_cropped.png";
-
-const formFactory = (formId, classList, inputFields, headerTxt, submitBtnTxt, formValidation) => {
-
-    const formatString = (s) => s.toLowerCase().trim().replace(/\s+/g, '-');
-
-    const formDiv = document.createElement("div");
-    const form = document.createElement("form");
-    formDiv.classList.add("form-div");
-    form.id = formId;
-    form.classList.add(...classList);
-
-    const header = document.createElement("div");
-    header.classList.add("form-header")
-    header.innerText = headerTxt;
-
-    form.append(header);
-
-    inputFields.forEach((inputF) => {
-
-        const div = document.createElement("div");
-        const label = document.createElement("label");
-        const input = document.createElement(inputF.type);
-        div.classList.add("input-field-div");
-        label.innerText = inputF.label;
-        input.id = formatString(formId + "-" + inputF.label);
-        input.classList.add("input");
-        input.setAttribute("name", formatString(inputF.label));
-        if(inputF.inputType) input.setAttribute("type", inputF.inputType);
-        label.setAttribute("for", input.id);
-        if(!inputF.opt) input.setAttribute("required", "");
-
-        div.append(input, label);
-        form.append(div);
-        
-    });
-
-    const btn = document.createElement("button");
-    btn.innerText = submitBtnTxt;
-    btn.setAttribute("form", form.id);
-    btn.addEventListener("click", formValidation);
-
-    form.append(btn);
-
-    formDiv.append(form);
-    return { 
-    
-        formDiv 
-    
-    };
-
-}
-
-const orderFactory = (_products) => {
-
-    const product = (type, _name) => {
-
-        const name = "(" + type + ") " + _name;
-
-        let quantity = 0;
-
-        const incQuantity = () => ++quantity;
-        const decQuantity = () => quantity > 0 ? --quantity : 0;
-
-        const getQuantity = () => quantity;
-
-        return {
-
-            type,
-            name,
-            incQuantity,
-            decQuantity,
-            getQuantity
-
-        }
-
-    }
-
-    const products = [];
-    for(const prod of _products) {
-        for(let i = 1; i < prod.length; i++)
-            products.push(product(prod[0], prod[i]));
-    }
-
-    const getOrder = () => products.filter((prod) => prod.getQuantity() > 0);
-
-    const getProduct = (name) => products.find((prod) => prod.name === name);
-
-    return {
-
-        getOrder,
-        getProduct
-
-    }
-
-}
+import orderFactory from "./order.js"
 
 export default () => {
+
+    const formatString = (s) => s.toLowerCase().trim().replace(/\s+/g, '-');
 
     const restaurantName = "El Perro Caca"
 
@@ -161,19 +69,81 @@ export default () => {
     btnDiv.append(btn);
     container.append(btnDiv);
 
-    const orderNowDiv = document.createElement("div");
-    const form = formFactory("order-now-form", [], [
-        {label: "Name", type: "input", inputType: null, opt: false},
-        {label: "Address", type: "input", inputType: null, opt: false},
-        {label: "Email", type: "input", inputType: "email", opt: false},
-    ], "Place your order", "Confirm", () => {}).formDiv;
+    //////////// ADDRESS FORM ////////////
 
-    form.id = "order-now-form-div"
+    let addressFormDiv = document.createElement("div");
+    addressFormDiv.classList.add("form-div");
+    addressFormDiv.classList.add("address-form-container");
+
+    const addressForm = document.createElement("form");
+    addressForm.id = "main-page-address-form";
+    addressForm.innerHTML = '<div></div>' + '<div class="address-form-div"></div>'.repeat(4) + '<button></button>';
+    addressFormDiv.append(addressForm);
     
+    addressForm.childNodes[0].innerHTML = "<h2>Contact info</h2>";
+    addressForm.childNodes[0].classList.add("form-header");
+
+    const inputFieldNames = ["First name", "Last name", "Address", "Adress 2", "City", "State", "Postal code", "Email", "Phone number"];
+
+    const inputFields = [];
+    for(let i = 0; i < inputFieldNames.length; i++) {
+        const inputName = inputFieldNames[i]
+        const inputId = formatString(inputName);
+        const inputDiv = document.createElement("div");
+        inputDiv.innerHTML = `<label for="order-${inputId}">${inputName}</label><input id="order-${inputId}" class="input">`;
+        inputDiv.classList.add("input-field-div");
+        inputDiv.classList.add("form-address-input-field-div");
+        inputFields.push(inputDiv);
+    }
+
+    addressForm.childNodes[1].append(inputFields[0], inputFields[1]);
+    addressForm.childNodes[2].append(inputFields[2], inputFields[3], inputFields[4], inputFields[5], inputFields[6]);
+    addressForm.childNodes[3].append(inputFields[7], inputFields[8]);
+
+    addressForm.childNodes[4].classList.add("address-form-radio-btn-div");
+
+    const forWhoOrderDiv = document.createElement("div");
+    forWhoOrderDiv.classList.add("order-radio-btn-div");
+    forWhoOrderDiv.innerHTML = "<h3>Who is this order for?</h3><div></div>";
+    forWhoOrderDiv.childNodes[1].innerHTML = '<div>' +
+                                                '<input type="radio" id="radio-btn-myself" name="for-who-radio-btn">' +
+                                                '<label for="radio-btn-myself">Myself</label>'+
+                                              '</div>' +
+                                              '<div>' +
+                                                '<input type="radio" id="radio-btn-eses" name="for-who-radio-btn">' +
+                                                '<label for="radio-btn-eses">My eses</label>' +
+                                              '</div>';
+
+    const deliveryTypeDiv = document.createElement("div");
+    deliveryTypeDiv.classList.add("order-radio-btn-div");
+    deliveryTypeDiv.innerHTML = "<h3>Pick up option</h3><div></div>";
+    deliveryTypeDiv.childNodes[1].innerHTML = '<div>' +
+                                                '<input type="radio" id="radio-btn-home" name="delivery-type-radio-btn">' +
+                                                '<label for="radio-btn-home">Deliver at my address</label>'+
+                                              '</div>' +
+                                              '<div>' +
+                                                '<input type="radio" id="radio-btn-store" name="delivery-type-radio-btn">' +
+                                                '<label for="radio-btn-store">I\'ll pick up at the store</label>' +
+                                              '</div>';
+
+    addressForm.childNodes[4].append(forWhoOrderDiv, deliveryTypeDiv);
+
+    addressForm.childNodes[5].innerText = "Confirm";
+    //addressForm.childNodes[5].classList.add("address-form-btn-div");
+
+    
+
+    const addressFormDialog = document.createElement("dialog");
+    addressFormDialog.append(addressFormDiv);
+    document.querySelector("body").append(addressFormDialog);
+    //content.append(addressFormDiv); //FOR TESTING
+
+    //////////// FOOD SELECTOR FORM ////////////
+
     const products = [
         ["Taco", "Al pastor", "Carne Asada", "Carnitas", "Papa con Chorizo", "Pollo Asado"],
         ["Quesadilla", "Carne Asada", "Chorizo", "Espinacas", "Pollo", "Queso"],
-        ["Enchiladas", "Carne Asada", "Carnitas", "Espinacas", "Papa", "Pollo"],
+        ["Enchilada", "Carne Asada", "Carnitas", "Espinacas", "Papa", "Pollo"],
         ["Tostada", "Camarones", "Carne Asada", "Cerviche", "Pollo", "Tinga"],
         ["Drinks", "Agua de Tamarindo", "Atole", "Café de Olla", "Cerveza", "Champurrado",
           "Horchata", "Jarritos", "Limonada", "Margarita", "Mezcal", "Paloma", "Sangria", "Tequila Sunrise"
@@ -182,15 +152,23 @@ export default () => {
 
     const order = orderFactory(products);
 
+    const productsOuterBox = document.createElement("div");
+    productsOuterBox.classList.add("product-outer-box");
+    
     const productsDiv = document.createElement("div");
     productsDiv.classList.add("product-div");
+    productsOuterBox.append(productsDiv);
+
 
     for(const product of products) {
+
         const div = document.createElement("div");
         div.classList.add("order-product-div");
         div.append(document.createElement("button"));
+        div.childNodes[0].setAttribute("type", "button");
         div.childNodes[0].classList.add("order-product-name");
         div.childNodes[0].innerText = product[0];
+
         div.childNodes[0].addEventListener("click", (evt) => {
 
             if(div.hasAttribute("expand"))
@@ -199,6 +177,7 @@ export default () => {
                 div.setAttribute("expand", "");
 
         });
+
         for(let i = 1; i < product.length; i++) {
 
             const subProductDiv = document.createElement("div");
@@ -206,6 +185,7 @@ export default () => {
             subProductDiv.append(document.createElement("div"));
             subProductDiv.childNodes[0].classList.add("order-subproduct");
             subProductDiv.childNodes[0].innerText = product[i];
+
             const quantDiv = document.createElement("div");
             quantDiv.classList.add("order-quant-div");
             quantDiv.append(document.createElement("div"))
@@ -214,8 +194,10 @@ export default () => {
             quantDiv.childNodes[0].classList.add("order-quant");
             quantDiv.childNodes[0].innerText = "0";
             quantDiv.childNodes[1].classList.add("order-quant-btn");
+            quantDiv.childNodes[1].setAttribute("type", "button");
             quantDiv.childNodes[1].innerText = "+";
             quantDiv.childNodes[2].classList.add("order-quant-btn");
+            quantDiv.childNodes[2].setAttribute("type", "button");
             quantDiv.childNodes[2].innerText = "-";
 
             const changeQuantity = (name, x) => {
@@ -228,8 +210,6 @@ export default () => {
             }
 
             const increase = (evt) => {
-
-                console.log("a");
 
                 const name = "(" + product[0] +") " + product[i];
                 let quantity = changeQuantity(name, 1);
@@ -252,19 +232,100 @@ export default () => {
             div.append(subProductDiv);
 
         }
+
         productsDiv.append(div);
+
     }
 
-    container.append(form);
+    /*
+    orderNowDiv.childNodes[1].append(productsOuterBox);
+    orderNowDiv.childNodes[1].classList.add("order-now-div");
+    orderNowDiv.childNodes[1].classList.add("product-picker");
+    */
 
-    //for testing
-    container.append(productsDiv);
+    const foodSelectorDialog = document.createElement("dialog");
+    foodSelectorDialog.append(productsOuterBox);
+    document.querySelector("body").append(foodSelectorDialog);
+
+    //content.append(productsOuterBox);
+
+    //////////////// ORDER NOW ////////////////
+
+    const orderNowDiv = document.createElement("div");
+    orderNowDiv.classList.add("order-now");
+    //orderNowDiv.innerHTML = "<div></div>".repeat(4);
+
+    //////////// FOOD SELECTOR DIV ////////////
+
+    const foodSelectorDiv = document.createElement("div");
+    foodSelectorDiv.classList.add("order-selector-div");
+    foodSelectorDiv.innerHTML = '<button type="button">Select your products</button>'
+
+    foodSelectorDiv.childNodes[0].addEventListener("click", () => {foodSelectorDialog.showModal()});
+    
+    foodSelectorDiv.append(productsOuterBox);
+
+    orderNowDiv.append(foodSelectorDiv);
+
+    //////////// ADDRESS DIV ////////////
+
+    const addressDiv = document.createElement("div");
+    addressDiv.classList.add("order-address-div");
+
+    //NO ADDRESS STATE
+
+    addressDiv.setAttribute("no-address", "");
+    addressDiv.innerHTML = '<div>Oh no! It appears that we have no way to find you. Why don\'t you change that by clicking the button bellow.</div><button type="button">Add your address</button>';
+
+    addressDiv.childNodes[1].addEventListener("click", () => {addressFormDialog.showModal()});
+
+    //WITH ADDRESS STATE
+
+    orderNowDiv.append(addressDiv);
+
+    //////////// ORDER VIEW ////////////
+
+    const orderViewDiv = document.createElement("div");
+    orderViewDiv.classList.add("order-view-div");
+
+    orderViewDiv.innerText = ":(";
+
+    orderNowDiv.append(orderViewDiv);
+
+    //////////// BUTTONS //////////// 
+
+    const orderBtnDiv = document.createElement("div");
+    orderBtnDiv.classList.add("order-btn-div");
+
+    const orderPriceDisplayDiv = document.createElement("div");
+    orderPriceDisplayDiv.classList.add("order-price-display-div");
+    orderPriceDisplayDiv.innerHTML = '<div>' +
+                                       '<div>Total price</div>' +
+                                       '<div>$0,00</div>' +
+                                     '</div>';
+
+    orderBtnDiv.append(orderPriceDisplayDiv);
+
+    const orderBtnContainer = document.createElement("div");
+    orderBtnContainer.innerHTML = "<button></button><button></button>";
+    orderBtnContainer.childNodes[0].innerText = "Clear order";
+    orderBtnContainer.childNodes[0].setAttribute("type", "button");
+    orderBtnContainer.childNodes[1].innerText = "Submit order";
+    orderBtnContainer.childNodes[1].setAttribute("type", "button");
+
+    orderBtnDiv.append(orderBtnContainer);
+
+    orderNowDiv.append(orderBtnDiv);
+
+    //////////////////////// 
+
+    container.append(orderNowDiv);
 
     btn.addEventListener("click", () => {
-        if(form.hasAttribute("show"))
-            form.removeAttribute("show");
+        if(orderNowDiv.hasAttribute("show"))
+            orderNowDiv.removeAttribute("show");
         else
-            form.setAttribute("show", "");
+            orderNowDiv.setAttribute("show", "");
     })
 
     content.append(container);
