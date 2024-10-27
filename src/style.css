@@ -534,13 +534,46 @@ button:focus {
 }
 
 .order-address-div {
-    font-size: 1.6rem;
-
     grid-row: 1;
     grid-column: 2 / 4;
 }
 
-.order-address-div > button {
+.order-address-div[address] {
+    font-size: 1.2rem;
+    padding: 1rem;
+
+    display: grid;
+    grid-template-rows: 1.2em 0.2fr 1fr 1fr;
+}
+
+.order-address-div[address] div{
+    text-align: center;
+}
+
+.order-address-container {
+    grid-row: -3;
+}
+
+.order-address-container > div:last-child {
+    font-size: 1rem;
+}
+
+.order-address-div[address] > button {
+    font-size: 0.8em;
+    margin: auto;
+    height: 50%;
+    width: 35%;
+    
+    grid-row: -2;
+}
+
+.order-address-div[no-address] {
+    font-size: 1.6rem;
+
+    display: block;
+}
+
+.order-address-div[no-address] > button {
     font-size: 1.2rem;
     height: 35%;
     width: 40%;

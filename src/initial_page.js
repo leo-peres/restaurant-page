@@ -1,5 +1,6 @@
 import mainImg from "../assets/images/caca_cropped.png";
-import orderFactory from "./order.js"
+import orderFactory from "./order.js";
+import addressFormFactory from "./address_form.js"
 
 export default () => {
 
@@ -71,70 +72,10 @@ export default () => {
 
     //////////// ADDRESS FORM ////////////
 
-    let addressFormDiv = document.createElement("div");
-    addressFormDiv.classList.add("form-div");
-    addressFormDiv.classList.add("address-form-container");
-
-    const addressForm = document.createElement("form");
-    addressForm.id = "main-page-address-form";
-    addressForm.innerHTML = '<div></div>' + '<div class="address-form-div"></div>'.repeat(4) + '<button></button>';
-    addressFormDiv.append(addressForm);
-    
-    addressForm.childNodes[0].innerHTML = "<h2>Contact info</h2>";
-    addressForm.childNodes[0].classList.add("form-header");
-
-    const inputFieldNames = ["First name", "Last name", "Address", "Adress 2", "City", "State", "Postal code", "Email", "Phone number"];
-
-    const inputFields = [];
-    for(let i = 0; i < inputFieldNames.length; i++) {
-        const inputName = inputFieldNames[i]
-        const inputId = formatString(inputName);
-        const inputDiv = document.createElement("div");
-        inputDiv.innerHTML = `<label for="order-${inputId}">${inputName}</label><input id="order-${inputId}" class="input">`;
-        inputDiv.classList.add("input-field-div");
-        inputDiv.classList.add("form-address-input-field-div");
-        inputFields.push(inputDiv);
-    }
-
-    addressForm.childNodes[1].append(inputFields[0], inputFields[1]);
-    addressForm.childNodes[2].append(inputFields[2], inputFields[3], inputFields[4], inputFields[5], inputFields[6]);
-    addressForm.childNodes[3].append(inputFields[7], inputFields[8]);
-
-    addressForm.childNodes[4].classList.add("address-form-radio-btn-div");
-
-    const forWhoOrderDiv = document.createElement("div");
-    forWhoOrderDiv.classList.add("order-radio-btn-div");
-    forWhoOrderDiv.innerHTML = "<h3>Who is this order for?</h3><div></div>";
-    forWhoOrderDiv.childNodes[1].innerHTML = '<div>' +
-                                                '<input type="radio" id="radio-btn-myself" name="for-who-radio-btn">' +
-                                                '<label for="radio-btn-myself">Myself</label>'+
-                                              '</div>' +
-                                              '<div>' +
-                                                '<input type="radio" id="radio-btn-eses" name="for-who-radio-btn">' +
-                                                '<label for="radio-btn-eses">My eses</label>' +
-                                              '</div>';
-
-    const deliveryTypeDiv = document.createElement("div");
-    deliveryTypeDiv.classList.add("order-radio-btn-div");
-    deliveryTypeDiv.innerHTML = "<h3>Pick up option</h3><div></div>";
-    deliveryTypeDiv.childNodes[1].innerHTML = '<div>' +
-                                                '<input type="radio" id="radio-btn-home" name="delivery-type-radio-btn">' +
-                                                '<label for="radio-btn-home">Deliver at my address</label>'+
-                                              '</div>' +
-                                              '<div>' +
-                                                '<input type="radio" id="radio-btn-store" name="delivery-type-radio-btn">' +
-                                                '<label for="radio-btn-store">I\'ll pick up at the store</label>' +
-                                              '</div>';
-
-    addressForm.childNodes[4].append(forWhoOrderDiv, deliveryTypeDiv);
-
-    addressForm.childNodes[5].innerText = "Confirm";
-    //addressForm.childNodes[5].classList.add("address-form-btn-div");
-
-    
+    const addressForm = addressFormFactory();
 
     const addressFormDialog = document.createElement("dialog");
-    addressFormDialog.append(addressFormDiv);
+    addressFormDialog.append(addressForm.addressFormDiv);
     document.querySelector("body").append(addressFormDialog);
     //content.append(addressFormDiv); //FOR TESTING
 
@@ -279,7 +220,33 @@ export default () => {
 
     addressDiv.childNodes[1].addEventListener("click", () => {addressFormDialog.showModal()});
 
-    //WITH ADDRESS STATE
+    const updateAddress = () => {
+
+        addressDiv.innerHTML = '<div></div><div></div><button type"button">Change address</button>';
+        addressDiv.removeAttribute("no-address");
+        addressDiv.setAttribute("address", "");
+
+        addressDiv.childNodes[0].classList.add("order-address-greetings");
+        addressDiv.childNodes[1].classList.add("order-address-container");
+        
+        addressDiv.childNodes[0].innerText = `Hello, ${order.getClientName()}!`;
+        addressDiv.childNodes[1].innerHTML = "<div>Your food will be delivered at</div>" +
+                                            `<div>${order.getClientAddress()}</div>`;
+
+        addressDiv.childNodes[2].addEventListener("click", () => {addressFormDialog.showModal()}); 
+
+    }
+
+    addressForm.addConfirmBtnEvent(() => {
+        
+        const [name, address, email, phone] = addressForm.getValues();
+        order.addClientInfo(name, address, email, phone, {});
+
+        updateAddress();
+
+        addressFormDialog.close();
+
+    });
 
     orderNowDiv.append(addressDiv);
 
