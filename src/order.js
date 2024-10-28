@@ -66,6 +66,8 @@ export default (_products) => {
             products.push(product(prod[0], prod[i]));
     }
 
+    const getProducts = () => products;
+
     const getOrder = () => products.filter((prod) => prod.getQuantity() > 0);
 
     const getProduct = (name) => products.find((prod) => prod.name === name);
@@ -88,6 +90,7 @@ export default (_products) => {
 
     return {
 
+        getProducts,
         getOrder,
         getProduct,
         addClientInfo,

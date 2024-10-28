@@ -1,6 +1,7 @@
 import mainImg from "../assets/images/caca_cropped.png";
 import orderFactory from "./order.js";
-import addressFormFactory from "./address_form.js"
+import addressFormFactory from "./address_form.js";
+import foodSelectorFactory from "./food_selector.js";
 
 export default () => {
 
@@ -70,17 +71,6 @@ export default () => {
     btnDiv.append(btn);
     container.append(btnDiv);
 
-    //////////// ADDRESS FORM ////////////
-
-    const addressForm = addressFormFactory();
-
-    const addressFormDialog = document.createElement("dialog");
-    addressFormDialog.append(addressForm.addressFormDiv);
-    document.querySelector("body").append(addressFormDialog);
-    //content.append(addressFormDiv); //FOR TESTING
-
-    //////////// FOOD SELECTOR FORM ////////////
-
     const products = [
         ["Taco", "Al pastor", "Carne Asada", "Carnitas", "Papa con Chorizo", "Pollo Asado"],
         ["Quesadilla", "Carne Asada", "Chorizo", "Espinacas", "Pollo", "Queso"],
@@ -93,102 +83,13 @@ export default () => {
 
     const order = orderFactory(products);
 
-    const productsOuterBox = document.createElement("div");
-    productsOuterBox.classList.add("product-outer-box");
-    
-    const productsDiv = document.createElement("div");
-    productsDiv.classList.add("product-div");
-    productsOuterBox.append(productsDiv);
+    //////////// ADDRESS FORM ////////////
 
+    const addressForm = addressFormFactory();
 
-    for(const product of products) {
-
-        const div = document.createElement("div");
-        div.classList.add("order-product-div");
-        div.append(document.createElement("button"));
-        div.childNodes[0].setAttribute("type", "button");
-        div.childNodes[0].classList.add("order-product-name");
-        div.childNodes[0].innerText = product[0];
-
-        div.childNodes[0].addEventListener("click", (evt) => {
-
-            if(div.hasAttribute("expand"))
-                div.removeAttribute("expand");
-            else
-                div.setAttribute("expand", "");
-
-        });
-
-        for(let i = 1; i < product.length; i++) {
-
-            const subProductDiv = document.createElement("div");
-            subProductDiv.classList.add("order-subproduct-div");
-            subProductDiv.append(document.createElement("div"));
-            subProductDiv.childNodes[0].classList.add("order-subproduct");
-            subProductDiv.childNodes[0].innerText = product[i];
-
-            const quantDiv = document.createElement("div");
-            quantDiv.classList.add("order-quant-div");
-            quantDiv.append(document.createElement("div"))
-            quantDiv.append(document.createElement("button"));
-            quantDiv.append(document.createElement("button"));
-            quantDiv.childNodes[0].classList.add("order-quant");
-            quantDiv.childNodes[0].innerText = "0";
-            quantDiv.childNodes[1].classList.add("order-quant-btn");
-            quantDiv.childNodes[1].setAttribute("type", "button");
-            quantDiv.childNodes[1].innerText = "+";
-            quantDiv.childNodes[2].classList.add("order-quant-btn");
-            quantDiv.childNodes[2].setAttribute("type", "button");
-            quantDiv.childNodes[2].innerText = "-";
-
-            const changeQuantity = (name, x) => {
-                const prod = order.getProduct(name);
-                if(x > 0)
-                    prod.incQuantity();
-                else if(x < 0)
-                    prod.decQuantity();
-                return prod.getQuantity();
-            }
-
-            const increase = (evt) => {
-
-                const name = "(" + product[0] +") " + product[i];
-                let quantity = changeQuantity(name, 1);
-                quantDiv.childNodes[0].innerText = quantity;
-
-            }
-
-            const decrease = (evt) => {
-
-                const name = "(" + product[0] +") " + product[i];
-                let quantity = changeQuantity(name, -1);
-                quantDiv.childNodes[0].innerText = quantity;
-
-            }
-
-            quantDiv.childNodes[1].addEventListener("click", increase);
-            quantDiv.childNodes[2].addEventListener("click", decrease);
-
-            subProductDiv.append(quantDiv);
-            div.append(subProductDiv);
-
-        }
-
-        productsDiv.append(div);
-
-    }
-
-    /*
-    orderNowDiv.childNodes[1].append(productsOuterBox);
-    orderNowDiv.childNodes[1].classList.add("order-now-div");
-    orderNowDiv.childNodes[1].classList.add("product-picker");
-    */
-
-    const foodSelectorDialog = document.createElement("dialog");
-    foodSelectorDialog.append(productsOuterBox);
-    document.querySelector("body").append(foodSelectorDialog);
-
-    //content.append(productsOuterBox);
+    const addressFormDialog = document.createElement("dialog");
+    addressFormDialog.append(addressForm.addressFormDiv);
+    document.querySelector("body").append(addressFormDialog);
 
     //////////////// ORDER NOW ////////////////
 
@@ -203,8 +104,19 @@ export default () => {
     foodSelectorDiv.innerHTML = '<button type="button">Select your products</button>'
 
     foodSelectorDiv.childNodes[0].addEventListener("click", () => {foodSelectorDialog.showModal()});
-    
-    foodSelectorDiv.append(productsOuterBox);
+
+    const mainPageFoodSelector = foodSelectorFactory(products, order, false);
+
+    mainPageFoodSelector.classList.add("order-now-div");
+    mainPageFoodSelector.classList.add("product-picker");
+    foodSelectorDiv.append(mainPageFoodSelector);
+
+    const dialogFoodSelector = foodSelectorFactory(products, order, true);
+
+    const foodSelectorDialog = document.createElement("dialog");
+    foodSelectorDialog.append(dialogFoodSelector);
+    document.querySelector("body").append(foodSelectorDialog);
+
 
     orderNowDiv.append(foodSelectorDiv);
 
