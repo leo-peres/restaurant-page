@@ -1,4 +1,4 @@
-export default (_products) => {
+export default (items) => {
 
     const clientInfo = (() => {
 
@@ -7,7 +7,7 @@ export default (_products) => {
         const name = {firstName: "Joe", lastName: "Table"};
         const address = {
                          address: "123, 45th Street",
-                         address2: "apartment 12",
+                         address2: "",
                          city: "Oakland Park",
                          state: "FL",
                          postalCode: "12345"
@@ -56,12 +56,12 @@ export default (_products) => {
             decQuantity,
             getQuantity
 
-        }
+        };
 
     }
 
     const products = [];
-    for(const prod of _products) {
+    for(const prod of items) {
         for(let i = 1; i < prod.length; i++)
             products.push(product(prod[0], prod[i]));
     }
@@ -98,6 +98,6 @@ export default (_products) => {
         getClientName,
         getClientAddress
 
-    }
+    };
 
 }

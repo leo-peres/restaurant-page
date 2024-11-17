@@ -392,6 +392,7 @@ button:focus {
 /* ----------------- Food Selector ----------------- */
 
 .product-div {
+    color: var(--header-bg-color);
     background-color: var(--input-bg-color);
     border: 3px solid var(--header-bg-color);
     height: 100%;
@@ -453,19 +454,15 @@ button:focus {
     padding: 4px 0px 4px 10px;
     border: 0;
     margin: auto 0px;
+    visibility: inherit;
 }
 
 .order-quant-div {
     padding: 6px;
-    visibility: inherit;
 
     display: grid;
     grid-template-rows: 1fr 1fr;
     grid-template-columns: 1fr 1fr;
-}
-
-.order-quant-div[show] {
-    visibility: visible;
 }
 
 .order-quant {
@@ -485,6 +482,10 @@ button:focus {
     cursor: pointer;
 }
 
+.sub-product-list {
+    padding: 0;
+}
+
 /* ----------------- Order ----------------- */
 
 .order-now {
@@ -492,6 +493,7 @@ button:focus {
     font-weight: bold;
     padding: 12px 0px;
     height: 72vh;
+    width: 100%;
 
     grid-column: span 2;
 

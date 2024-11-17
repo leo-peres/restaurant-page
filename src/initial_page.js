@@ -1,5 +1,6 @@
 import mainImg from "../assets/images/caca_cropped.png";
 import orderFactory from "./order.js";
+import orderManagerFactory from "./order_manager.js";
 import addressFormFactory from "./address_form.js";
 import foodSelectorFactory from "./food_selector.js";
 
@@ -82,6 +83,7 @@ export default () => {
     ];
 
     const order = orderFactory(products);
+    const orderManager = orderManagerFactory(products);
 
     //////////// ADDRESS FORM ////////////
 
@@ -95,7 +97,6 @@ export default () => {
 
     const orderNowDiv = document.createElement("div");
     orderNowDiv.classList.add("order-now");
-    //orderNowDiv.innerHTML = "<div></div>".repeat(4);
 
     //////////// FOOD SELECTOR DIV ////////////
 
@@ -105,18 +106,17 @@ export default () => {
 
     foodSelectorDiv.childNodes[0].addEventListener("click", () => {foodSelectorDialog.showModal()});
 
-    const mainPageFoodSelector = foodSelectorFactory(products, order, false);
+    const mainPageFoodSelector = foodSelectorFactory(products, orderManager, false);
 
     mainPageFoodSelector.classList.add("order-now-div");
     mainPageFoodSelector.classList.add("product-picker");
     foodSelectorDiv.append(mainPageFoodSelector);
 
-    const dialogFoodSelector = foodSelectorFactory(products, order, true);
+    const dialogFoodSelector = foodSelectorFactory(products, orderManager, true);
 
     const foodSelectorDialog = document.createElement("dialog");
     foodSelectorDialog.append(dialogFoodSelector);
     document.querySelector("body").append(foodSelectorDialog);
-
 
     orderNowDiv.append(foodSelectorDiv);
 

@@ -1,98 +1,140 @@
-export default (products, order, expandDefault) => {
+const foodSelectorInterface = () => {
 
-    const productsOuterBox = document.createElement("div");
-    productsOuterBox.classList.add("product-outer-box");
+    const outerBox = document.createElement("div");
+    outerBox.classList.add("product-outer-box");
     
     const productsDiv = document.createElement("div");
     productsDiv.classList.add("product-div");
-    productsOuterBox.append(productsDiv);
+    outerBox.append(productsDiv);
 
+    const addProduct = (name, expandDefault) => {
 
-    const orderProductDivs = []
-    for(const product of products) {
+        const newProductDiv = document.createElement("div");
+        newProductDiv.classList.add("order-product-div");
+        newProductDiv.append(document.createElement("button"));
+        newProductDiv.childNodes[0].setAttribute("type", "button");
+        newProductDiv.childNodes[0].classList.add("order-product-name");
+        newProductDiv.childNodes[0].innerText = name;
 
-        const orderProductDiv = document.createElement("div");
-        orderProductDiv.classList.add("order-product-div");
-        orderProductDiv.append(document.createElement("button"));
-        orderProductDiv.childNodes[0].setAttribute("type", "button");
-        orderProductDiv.childNodes[0].classList.add("order-product-name");
-        orderProductDiv.childNodes[0].innerText = product[0];
+        const subProductList = document.createElement("ul");
+        subProductList.classList.add("sub-product-list");
 
-        if(expandDefault)
-            orderProductDiv.setAttribute("expand", "");
+        if(expandDefault) {
+            newProductDiv.setAttribute("expand", "");
+            newProductDiv.append(subProductList);
+        }
 
-        orderProductDiv.childNodes[0].addEventListener("click", (evt) => {
+        productsDiv.append(newProductDiv);
 
-            if(orderProductDiv.hasAttribute("expand"))
-                orderProductDiv.removeAttribute("expand");
-            else
-                orderProductDiv.setAttribute("expand", "");
+        const addOnClick = (newOnClick) => {
+            newProductDiv.childNodes[0].addEventListener("click", newOnClick);
+        }
 
-        });
+        const isExpanded = () => newProductDiv.hasAttribute("expand");
 
-        for(let i = 1; i < product.length; i++) {
+        const toggleExpand = () => {
+            if(isExpanded()) {
+                newProductDiv.removeAttribute("expand");
+                clear();
+            }
+            else {
+                newProductDiv.setAttribute("expand", "");
+                newProductDiv.append(subProductList);
+            }
+        }
 
-            const subProductDiv = document.createElement("div");
-            subProductDiv.classList.add("order-subproduct-div");
-            subProductDiv.append(document.createElement("div"));
-            subProductDiv.childNodes[0].classList.add("order-subproduct");
-            subProductDiv.childNodes[0].innerText = product[i];
+        const clear = () => {newProductDiv.removeChild(subProductList);}
+
+        const addSubProduct = (type, name, quantity, incQuantity, decQuantity) => {
+
+            const newSubProductDiv = document.createElement("div");
+            newSubProductDiv.classList.add("order-subproduct-div");
+            newSubProductDiv.append(document.createElement("div"));
+            newSubProductDiv.childNodes[0].classList.add("order-subproduct");
+            newSubProductDiv.childNodes[0].innerText = name;
 
             const quantDiv = document.createElement("div");
             quantDiv.classList.add("order-quant-div");
-            quantDiv.append(document.createElement("div"))
-            quantDiv.append(document.createElement("button"));
-            quantDiv.append(document.createElement("button"));
-            quantDiv.childNodes[0].classList.add("order-quant");
-            quantDiv.childNodes[0].innerText = "0";
-            quantDiv.childNodes[1].classList.add("order-quant-btn");
-            quantDiv.childNodes[1].setAttribute("type", "button");
-            quantDiv.childNodes[1].innerText = "+";
-            quantDiv.childNodes[2].classList.add("order-quant-btn");
-            quantDiv.childNodes[2].setAttribute("type", "button");
-            quantDiv.childNodes[2].innerText = "-";
 
-            const changeQuantity = (name, x) => {
-                const prod = order.getProduct(name);
-                if(x > 0)
-                    prod.incQuantity();
-                else if(x < 0)
-                    prod.decQuantity();
-                return prod.getQuantity();
-            }
+            const quantityDisplay = document.createElement("div");
+            quantityDisplay.classList.add("order-quant");
+            quantityDisplay.innerText = quantity;
 
-            const increase = (evt) => {
+            const increaseBtn = document.createElement("button");
+            const decreaseBtn = document.createElement("button");
 
-                const name = "(" + product[0] +") " + product[i];
-                let quantity = changeQuantity(name, 1);
-                quantDiv.childNodes[0].innerText = quantity;
+            const id = `(${type}) ${name}`;
 
-            }
+            increaseBtn.classList.add("order-quant-btn");
+            increaseBtn.setAttribute("type", "button");
+            increaseBtn.innerText = '+';
+            increaseBtn.addEventListener("click", () => {incQuantity(id);});
 
-            const decrease = (evt) => {
+            decreaseBtn.classList.add("order-quant-btn");
+            decreaseBtn.setAttribute("type", "button");
+            decreaseBtn.innerText = '-';
+            decreaseBtn.addEventListener("click", () => {decQuantity(id);});
 
-                const name = "(" + product[0] +") " + product[i];
-                let quantity = changeQuantity(name, -1);
-                quantDiv.childNodes[0].innerText = quantity;
+            quantDiv.append(quantityDisplay);
+            quantDiv.append(increaseBtn);
+            quantDiv.append(decreaseBtn);
 
-            }
+            newSubProductDiv.append(quantDiv);
 
-            quantDiv.childNodes[1].addEventListener("click", increase);
-            quantDiv.childNodes[2].addEventListener("click", decrease);
+            subProductList.append(newSubProductDiv);
 
-            subProductDiv.append(quantDiv);
-            orderProductDiv.append(subProductDiv);
+            //const increaseBtnAddOnClick = (onClickFunction) => {increaseBtn.addEventListener("click", onClickFunction)}
+            //const decreaseBtnAddOnClick = (onClickFunction) => {decreaseBtn.addEventListener("click", onClickFunction)}
+
+            const setQuantity = (quantity) => {quantityDisplay.innerText = quantity;};
+
+            return {
+                id,
+                setQuantity
+            };
 
         }
 
-        productsDiv.append(orderProductDiv);
+        return {
+
+            addOnClick,
+            isExpanded,
+            toggleExpand,
+            addSubProduct,
+            clear
+
+        };
+
+    };
+
+    return {
+
+        outerBox,
+        addProduct
+
+    };
+
+}
+
+export default (products, orderManager, expandDefault) => {
+
+    const fsInterface = foodSelectorInterface();
+
+    for(const item of orderManager.orderItems) {
+
+        const newProd = fsInterface.addProduct(item.name, expandDefault);
+
+        for(const subItem of item.subItems) {
+            const newSubProd = newProd.addSubProduct(item.name, subItem.name, subItem.getQuantity(), orderManager.addToOrder, orderManager.removeFromOrder);
+            orderManager.addQuantityDisplay({source: subItem.getQuantity, display: newSubProd.setQuantity});
+        }
+
+        newProd.addOnClick(() => {
+            newProd.toggleExpand();
+        });
 
     }
 
-    const foodSelectorDialog = document.createElement("dialog");
-    foodSelectorDialog.append(productsOuterBox);
-    document.querySelector("body").append(foodSelectorDialog);
-
-    return productsOuterBox;
+    return fsInterface.outerBox;
 
 }
