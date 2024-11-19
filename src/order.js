@@ -43,7 +43,7 @@ export default (items) => {
 
         let quantity = 0;
 
-        const incQuantity = () => ++quantity;
+        const incQuantity = () => quantity < 99 ? ++quantity : 99;
         const decQuantity = () => quantity > 0 ? --quantity : 0;
 
         const getQuantity = () => quantity;

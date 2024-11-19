@@ -91,6 +91,7 @@ export default () => {
 
     const addressFormDialog = document.createElement("dialog");
     addressFormDialog.append(addressForm.addressFormDiv);
+    addressFormDialog.classList.add("address-form-dialog");
     document.querySelector("body").append(addressFormDialog);
 
     //////////////// ORDER NOW ////////////////
@@ -116,6 +117,7 @@ export default () => {
 
     const foodSelectorDialog = document.createElement("dialog");
     foodSelectorDialog.append(dialogFoodSelector);
+    foodSelectorDialog.classList.add("food-selector-dialog");
     document.querySelector("body").append(foodSelectorDialog);
 
     orderNowDiv.append(foodSelectorDiv);

@@ -11,7 +11,7 @@ export default (products) => {
                 const name = itemArr[i];
                 let quantity = 0;
                 const getQuantity = () => quantity;
-                const incQuantity = () => {console.log(quantity); return quantity < 99 ? ++quantity : 99;}
+                const incQuantity = () => quantity < 99 ? ++quantity : 99;
                 const decQuantity = () => quantity > 0 ? --quantity : 0;
                 const getString = () => `(${type}) ${name}`;
                 return {type, name, quantity, getQuantity, incQuantity, decQuantity, getString};

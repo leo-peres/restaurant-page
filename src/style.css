@@ -88,6 +88,11 @@ button:focus {
     outline: none;
 }
 
+dialog::backdrop {
+    background-color: #000000;
+    opacity: 35%;
+}
+
 /* ----------------- Home ----------------- */
 
 .home-container {
@@ -486,6 +491,13 @@ button:focus {
     padding: 0;
 }
 
+.food-selector-dialog {
+    background-color: var(--input-bg-color);
+    width: 40vw;
+    border: 5px solid var(--header-bg-color);
+    border-radius: 2vw;
+}
+
 /* ----------------- Order ----------------- */
 
 .order-now {
@@ -676,6 +688,19 @@ button:focus {
 
     grid-column: 1 / -1;
     display: block;
+}
+
+.address-form-dialog {
+    background-color: var(--btn-bg-color);
+    width: 40vw;
+    padding: 0;
+    border: 5px solid var(--header-bg-color);
+    border-radius: 2vw;
+}
+
+#main-page-address-form {
+    background-color: inherit;
+    padding: 16px;
 }
 
 #main-page-address-form > button {
