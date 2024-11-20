@@ -37,11 +37,9 @@ export default (items) => {
 
     })();
 
-    const product = (type, _name) => {
+    const product = (name, price) => {
 
-        const name = "(" + type + ") " + _name;
-
-        let quantity = 0;
+        let quantity = 1;
 
         const incQuantity = () => quantity < 99 ? ++quantity : 99;
         const decQuantity = () => quantity > 0 ? --quantity : 0;
@@ -50,8 +48,8 @@ export default (items) => {
 
         return {
 
-            type,
             name,
+            price,
             incQuantity,
             decQuantity,
             getQuantity
@@ -61,15 +59,59 @@ export default (items) => {
     }
 
     const products = [];
-    for(const prod of items) {
-        for(let i = 1; i < prod.length; i++)
-            products.push(product(prod[0], prod[i]));
+
+    const addProduct = (name, price) => {
+        products.push(product(name, price));
+    }
+
+    const removeProduct = (name) => {
+        const prod = getProduct(name);
+        if(prod) {
+            let index = products.indexOf(prod);
+            products.splice(index, 1);
+        }
+    }
+
+    const getQuantity = (name) => {
+        const prod = getProduct(name);
+        if(prod)
+            return prod.getQuantity();
+        else
+            return 0;
+    }
+
+    const incQuantity = (name, price) => {
+        const prod = getProduct(name);
+        if(prod)
+            return prod.incQuantity();
+        else {
+            addProduct(name, price);
+            return 1;
+        }
+    }
+
+    const decQuantity = (name) => {
+        const prod = getProduct(name);
+        if(prod) {
+            let quantity =  prod.decQuantity();
+            if(quantity == 0)
+                removeProduct(name);
+            return quantity;
+        }
+        else
+            return 0;
     }
 
     const getProducts = () => products;
 
-    const getOrder = () => products.filter((prod) => prod.getQuantity() > 0);
+    const getOrder = () => {
+        items = []
+        for(const item of products.filter((prod) => prod.getQuantity() > 0))
+            items.push({name: item.name, quantity: item.getQuantity(), price: item.price});
+        return items;
+    }
 
+    const hasProduct = (name) => products.some((prod) => prod.name === name);
     const getProduct = (name) => products.find((prod) => prod.name === name);
 
     const addClientInfo = (name, address, email, phone, delivery) => {
@@ -90,8 +132,12 @@ export default (items) => {
 
     return {
 
+        getQuantity,
+        incQuantity,
+        decQuantity,
         getProducts,
         getOrder,
+        hasProduct,
         getProduct,
         addClientInfo,
         hasAddress,

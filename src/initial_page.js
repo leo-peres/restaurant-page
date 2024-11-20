@@ -3,6 +3,7 @@ import orderFactory from "./order.js";
 import orderManagerFactory from "./order_manager.js";
 import addressFormFactory from "./address_form.js";
 import foodSelectorFactory from "./food_selector.js";
+import orderDisplayFactory from "./order_display.js"
 
 export default () => {
 
@@ -73,12 +74,12 @@ export default () => {
     container.append(btnDiv);
 
     const products = [
-        ["Taco", "Al pastor", "Carne Asada", "Carnitas", "Papa con Chorizo", "Pollo Asado"],
-        ["Quesadilla", "Carne Asada", "Chorizo", "Espinacas", "Pollo", "Queso"],
-        ["Enchilada", "Carne Asada", "Carnitas", "Espinacas", "Papa", "Pollo"],
-        ["Tostada", "Camarones", "Carne Asada", "Cerviche", "Pollo", "Tinga"],
-        ["Drinks", "Agua de Tamarindo", "Atole", "Café de Olla", "Cerveza", "Champurrado",
-          "Horchata", "Jarritos", "Limonada", "Margarita", "Mezcal", "Paloma", "Sangria", "Tequila Sunrise"
+        ["Taco", 10.99, "Al pastor", "Carne Asada", "Carnitas", "Papa con Chorizo", "Pollo Asado"],
+        ["Quesadilla", 10.99, "Carne Asada", "Chorizo", "Espinacas", "Pollo", "Queso"],
+        ["Enchilada", 10.99, "Carne Asada", "Carnitas", "Espinacas", "Papa", "Pollo"],
+        ["Tostada", 10.99, "Camarones", "Carne Asada", "Cerviche", "Pollo", "Tinga"],
+        ["Drinks", 10.99, "Agua de Tamarindo", "Atole", "Café de Olla", "Cerveza", "Champurrado",
+          "Horchata", 8.99, "Jarritos", "Limonada", "Margarita", "Mezcal", "Paloma", "Sangria", "Tequila Sunrise"
         ]
     ];
 
@@ -166,12 +167,10 @@ export default () => {
 
     //////////// ORDER VIEW ////////////
 
-    const orderViewDiv = document.createElement("div");
-    orderViewDiv.classList.add("order-view-div");
+    const orderDisplay = orderDisplayFactory();
+    orderManager.addOrderDisplay(orderDisplay);
 
-    orderViewDiv.innerText = ":(";
-
-    orderNowDiv.append(orderViewDiv);
+    orderNowDiv.append(orderDisplay.div);
 
     //////////// BUTTONS //////////// 
 

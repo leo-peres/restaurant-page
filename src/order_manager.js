@@ -1,20 +1,25 @@
+import orderFactory from "./order.js"
+
 export default (products) => {
+
+    const order = orderFactory();
 
     const orderItem = (itemArr) => {
 
         const name = itemArr[0];
 
         const subItems = [];
-        for(let i = 1; i < itemArr.length; i++) {
+        for(let i = 2; i < itemArr.length; i++) {
 
             const newSubItem = ((type) => {
                 const name = itemArr[i];
-                let quantity = 0;
-                const getQuantity = () => quantity;
-                const incQuantity = () => quantity < 99 ? ++quantity : 99;
-                const decQuantity = () => quantity > 0 ? --quantity : 0;
-                const getString = () => `(${type}) ${name}`;
-                return {type, name, quantity, getQuantity, incQuantity, decQuantity, getString};
+                let price = itemArr[1];
+                const id = `(${type}) ${name}`;
+                const getQuantity = () => order.getQuantity(id);
+                const incQuantity = () => order.incQuantity(id);
+                const decQuantity = () => order.decQuantity(id);
+                const getString = () => id;
+                return {type, price, name, getQuantity, incQuantity, decQuantity, getString};
             })(name);
 
             subItems.push(newSubItem);
@@ -45,8 +50,9 @@ export default (products) => {
         }
 
         if(addedItem) {
-            addedItem.incQuantity();
-            updateDisplays();
+            order.incQuantity(addedItem.getString(), addedItem.price);
+            updateQuantityDisplays();
+            updateOrderDisplays();
         }
 
     }
@@ -62,8 +68,9 @@ export default (products) => {
         }
 
         if(removedItem) {
-            removedItem.decQuantity();
-            updateDisplays();
+            order.decQuantity(removedItem.getString());
+            updateQuantityDisplays();
+            updateOrderDisplays();
         }
 
     }
@@ -73,9 +80,21 @@ export default (products) => {
         quantityDisplays.push(newQuantDisplay);
     }
 
-    const updateDisplays = () => {
+    const updateQuantityDisplays = () => {
         for(const qd of quantityDisplays)
             qd.display(qd.source());
+    }
+
+    const orderDisplays = [];
+    const addOrderDisplay = (newOrderDisplay) => {
+        orderDisplays.push(newOrderDisplay);
+        updateOrderDisplays();
+    }
+
+    const updateOrderDisplays = () => {
+        const items = order.getOrder();
+        for(const orderDisplay of orderDisplays)
+            orderDisplay.update(items);
     }
 
     return {
@@ -83,7 +102,8 @@ export default (products) => {
         orderItems,
         addToOrder,
         removeFromOrder,
-        addQuantityDisplay
+        addQuantityDisplay,
+        addOrderDisplay
 
     };
 
