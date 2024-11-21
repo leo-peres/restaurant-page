@@ -214,6 +214,7 @@ export default () => {
 
     orderNowBtn.addEventListener("click", () => {
         orderNowDiv.removeAttribute("hidden");
+        window.scrollTo({top: document.body.scrollHeight});
     })
 
     content.append(container);

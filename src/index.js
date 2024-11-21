@@ -5,9 +5,9 @@ import contactPage from "./contact.js";
 
 let currentPage = "home";
 
-initialPage();
-
 function changePage(evt) {
+
+    console.log("a");
 
     let id = evt.target.id.slice(0, 4);    
     if(!(id === currentPage)) {
@@ -18,7 +18,8 @@ function changePage(evt) {
         switch(id) {
             case "home":
                 initialPage();
-                document.getElementById("menu-btn").addEventListener("click", changePage);
+                //document.getElementById("menu-btn").addEventListener("click", changePage);
+                addMenuBtnEvent();
                 currentPage = "home";
                 break;
             case "menu":
@@ -32,4 +33,23 @@ function changePage(evt) {
     }
 }
 
-document.querySelectorAll(".header-nav, #menu-btn").forEach((e) => {e.addEventListener("click", changePage)});
+document.querySelectorAll(".header-nav").forEach((e) => {e.addEventListener("click", changePage)});
+
+const addMenuBtnEvent = () => {
+    
+    document.getElementById("menu-btn").addEventListener("click", () => {
+    
+    const content = document.getElementById("content");
+    content.innerHTML = "";
+
+    menuPage();
+    currentPage = "menu";
+
+    window.scrollTo({top: 0});
+
+    });
+
+}
+
+initialPage();
+addMenuBtnEvent();
