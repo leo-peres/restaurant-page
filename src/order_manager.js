@@ -73,6 +73,11 @@ export default (products) => {
 
     }
 
+    const clearOrder = () => {
+        order.clear();
+        update();
+    }
+
     const quantityDisplays = [];
     const addQuantityDisplay = (newQuantDisplay) => {
         quantityDisplays.push(newQuantDisplay);
@@ -118,6 +123,7 @@ export default (products) => {
         orderItems,
         addToOrder,
         removeFromOrder,
+        clearOrder,
         addQuantityDisplay,
         addOrderDisplay,
         addTotalPriceDisplay

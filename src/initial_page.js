@@ -199,6 +199,10 @@ export default () => {
     orderBtnContainer.childNodes[1].innerText = "Submit order";
     orderBtnContainer.childNodes[1].setAttribute("type", "button");
 
+    orderBtnContainer.childNodes[0].addEventListener("click", () => {
+        orderManager.clearOrder();
+    });
+
     orderBtnDiv.append(orderBtnContainer);
 
     orderNowDiv.append(orderBtnDiv);

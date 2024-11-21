@@ -121,6 +121,10 @@ export default (items) => {
     const hasProduct = (name) => products.some((prod) => prod.name === name);
     const getProduct = (name) => products.find((prod) => prod.name === name);
 
+    const clear = () => {
+        products.length = 0;
+    }
+
     const addClientInfo = (name, address, email, phone, delivery) => {
 
         Object.assign(clientInfo.name, name);
@@ -147,6 +151,7 @@ export default (items) => {
         getTotalPrice,
         hasProduct,
         getProduct,
+        clear,
         addClientInfo,
         hasAddress,
         getClientName,
