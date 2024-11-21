@@ -78,8 +78,8 @@ export default () => {
         ["Quesadilla", 10.99, "Carne Asada", "Chorizo", "Espinacas", "Pollo", "Queso"],
         ["Enchilada", 10.99, "Carne Asada", "Carnitas", "Espinacas", "Papa", "Pollo"],
         ["Tostada", 10.99, "Camarones", "Carne Asada", "Cerviche", "Pollo", "Tinga"],
-        ["Drinks", 10.99, "Agua de Tamarindo", "Atole", "Café de Olla", "Cerveza", "Champurrado",
-          "Horchata", 8.99, "Jarritos", "Limonada", "Margarita", "Mezcal", "Paloma", "Sangria", "Tequila Sunrise"
+        ["Drinks", 8.99, "Agua de Tamarindo", "Atole", "Café de Olla", "Cerveza", "Champurrado",
+          "Horchata", "Jarritos", "Limonada", "Margarita", "Mezcal", "Paloma", "Sangria", "Tequila Sunrise"
         ]
     ];
 
@@ -181,10 +181,16 @@ export default () => {
     orderPriceDisplayDiv.classList.add("order-price-display-div");
     orderPriceDisplayDiv.innerHTML = '<div>' +
                                        '<div>Total price</div>' +
-                                       '<div>$0,00</div>' +
+                                       '<div>$0.00</div>' +
                                      '</div>';
 
     orderBtnDiv.append(orderPriceDisplayDiv);
+
+    const setTotalPrice = (totalPrice) => {
+        orderPriceDisplayDiv.childNodes[0].childNodes[1].innerText = `\$${totalPrice}`;
+    }
+
+    orderManager.addTotalPriceDisplay(setTotalPrice);
 
     const orderBtnContainer = document.createElement("div");
     orderBtnContainer.innerHTML = "<button></button><button></button>";

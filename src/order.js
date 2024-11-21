@@ -111,6 +111,13 @@ export default (items) => {
         return items;
     }
 
+    const getTotalPrice = () => {
+        let total = 0;
+        for(const prod of products)
+            total += prod.price*prod.getQuantity();
+        return total.toFixed(2);
+    }
+
     const hasProduct = (name) => products.some((prod) => prod.name === name);
     const getProduct = (name) => products.find((prod) => prod.name === name);
 
@@ -137,6 +144,7 @@ export default (items) => {
         decQuantity,
         getProducts,
         getOrder,
+        getTotalPrice,
         hasProduct,
         getProduct,
         addClientInfo,

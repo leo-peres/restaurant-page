@@ -51,8 +51,7 @@ export default (products) => {
 
         if(addedItem) {
             order.incQuantity(addedItem.getString(), addedItem.price);
-            updateQuantityDisplays();
-            updateOrderDisplays();
+            update();
         }
 
     }
@@ -69,8 +68,7 @@ export default (products) => {
 
         if(removedItem) {
             order.decQuantity(removedItem.getString());
-            updateQuantityDisplays();
-            updateOrderDisplays();
+            update();
         }
 
     }
@@ -97,13 +95,32 @@ export default (products) => {
             orderDisplay.update(items);
     }
 
+    const totalPriceDisplays = [];
+    const addTotalPriceDisplay = (newTotalPriceDisplay) => {
+        totalPriceDisplays.push(newTotalPriceDisplay);
+        updateTotalPriceDisplays();
+    }
+
+    const updateTotalPriceDisplays = () => {
+        const totalPrice = order.getTotalPrice();
+        for(const totalPriceDisplay of totalPriceDisplays)
+            totalPriceDisplay(totalPrice);
+    }
+
+    const update = () => {
+        updateQuantityDisplays();
+        updateOrderDisplays();
+        updateTotalPriceDisplays();
+    }
+
     return {
 
         orderItems,
         addToOrder,
         removeFromOrder,
         addQuantityDisplay,
-        addOrderDisplay
+        addOrderDisplay,
+        addTotalPriceDisplay
 
     };
 
