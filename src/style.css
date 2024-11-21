@@ -34,6 +34,7 @@ header {
     font-size: 1.2rem;
     font-weight: bold;
     padding: 32px 15% 32px calc(15% + 100vw - 100%);
+    border-bottom: 10px solid #fcf2a4;
     margin-bottom: 24px;
     position: relative;
 
@@ -149,7 +150,7 @@ dialog::backdrop {
     height: 320px;
 }
 
-#order-now {
+#order-now-btn {
     font-size: 1.8rem;
     width: 240px;
     height: 240px;
@@ -503,6 +504,7 @@ dialog::backdrop {
     background-color: #fcf2a4;
     font-weight: bold;
     padding: 12px 0px;
+    border: 4px solid var(--header-bg-color);
     height: 72vh;
     width: 100%;
 
@@ -511,6 +513,11 @@ dialog::backdrop {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 50%);
+
+}
+
+.order-now[hidden] {
+    display:none;
 }
 
 .order-now > div {

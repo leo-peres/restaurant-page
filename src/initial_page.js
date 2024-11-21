@@ -66,11 +66,11 @@ export default () => {
     let btnDiv = document.createElement("div");
     btnDiv.classList.add("btn-div");
 
-    btn = document.createElement("button");
-    btn.innerText = "Order now!!!";
-    btn.id = "order-now";
+    const orderNowBtn = document.createElement("button");
+    orderNowBtn.innerText = "Order now!!!";
+    orderNowBtn.id = "order-now-btn";
 
-    btnDiv.append(btn);
+    btnDiv.append(orderNowBtn);
     container.append(btnDiv);
 
     const products = [
@@ -99,6 +99,7 @@ export default () => {
 
     const orderNowDiv = document.createElement("div");
     orderNowDiv.classList.add("order-now");
+    orderNowDiv.setAttribute("hidden", "");
 
     //////////// FOOD SELECTOR DIV ////////////
 
@@ -211,11 +212,8 @@ export default () => {
 
     container.append(orderNowDiv);
 
-    btn.addEventListener("click", () => {
-        if(orderNowDiv.hasAttribute("show"))
-            orderNowDiv.removeAttribute("show");
-        else
-            orderNowDiv.setAttribute("show", "");
+    orderNowBtn.addEventListener("click", () => {
+        orderNowDiv.removeAttribute("hidden");
     })
 
     content.append(container);
